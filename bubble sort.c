@@ -1,23 +1,28 @@
-#include <stdio.h>
-
+#include<stdio.h>
 int main() {
-  int arr[10], x, y, temp;
-  printf("Enter the elements of the array: ");
-  for (x = 0; x < 10; x++) {
-    scanf("%d", &arr[x]);
+  int arr[5];
+  int n = 5;
+  printf("Enter elements of the array: ");
+  for (int i = 0; i < 5; i++) {
+    scanf("%d", &arr[i]);
   }
-  for (x = 0; x < 9; x++) {
-    for (y = 0; y < 9 - x; y++) {
-      if (arr[y] > arr[y + 1]) {
-        temp = arr[y];
-        arr[y] = arr[y + 1];
-        arr[y + 1] = temp;
+
+  // Bubble sort
+  for (int count = 0; count < n - 1; count++) {
+    for (int i = 0; i < n - count - 1; i++) {
+      if (arr[i] > arr[i + 1]) {
+        int temp = arr[i];
+        arr[i] = arr[i + 1];
+        arr[i + 1] = temp;
       }
     }
   }
-  printf("The sorted array is: ");
-  for (x = 0; x < 10; x++) {
-    printf("%d\n", arr[x]);
+  // Print sorted array
+  printf("Sorted array: ");
+  for (int i = 0; i < 5; i++) {
+    printf("%d ", arr[i]);
   }
+  printf("\n");
+
   return 0;
 }
