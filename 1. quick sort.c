@@ -1,70 +1,54 @@
-#include <stdio.h>
+#include<stdio.h>
 
 #define MAXSIZE 500
 
-void sort(int elements[], int left, int right);
-void quicksort(int elements[], int maxsize);
+int partition(int elements[], int left, int right);
+void quicksort(int elements[], int left, int right);
 
-void quicksort(int elements[], int maxsize) {
-    sort(elements, 0, maxsize - 1);
+void quicksort(int elements[], int left, int right) {
+    if (left < right) {
+        int location = partition(elements, left, right);
+        quicksort(elements, left, location - 1);
+        quicksort(elements, location + 1, right);
+    }
 }
 
-void sort(int elements[], int left, int right) {
-    int center, i, j, pivot, temp;
-    
-    i = left;
-    j = right;
-    center = (left + right) / 2;
-    pivot = elements[center];
+int partition(int elements[], int left, int right) {
+    int pivot = elements[left];
+    int start = left;
+    int end = right;
 
-    while (i <= j) {
-        while (elements[i] < pivot)
-            i++;
-        
-        while (elements[j] > pivot)
-            j--;
-        
-        if (i <= j) {
-            temp = elements[i];
-            elements[i] = elements[j];
-            elements[j] = temp;
-            i++;
-            j--;
+    while (start < end) {
+        while (elements[start] <= pivot) {
+            start++;
+        }
+        while (elements[end] > pivot) {
+            end--;
+        }
+        if (start < end) {
+            int temp = elements[start];
+            elements[start] = elements[end];
+            elements[end] = temp;
         }
     }
+    // Swap pivot to its correct position
+    int temp = elements[left];
+    elements[left] = elements[end];
+    elements[end] = temp;
 
-    if (left < j)
-        sort(elements, left, j);
-    
-    if (i < right)
-        sort(elements, i, right);
+    return end;
 }
 
 int main() {
-    int elements[MAXSIZE];
-    int i, maxsize;
-
-    printf("Enter how many elements you want: ");
-    scanf("%d", &maxsize);
-
-    printf("\nEnter values one by one:\n");
-
-    for (i = 0; i < maxsize; i++) {
+    int elements[5];
+    printf("Enter elements of array: ");
+    for (int i = 0; i < 5; i++) {
         scanf("%d", &elements[i]);
     }
-
-    printf("\nArray before sort:\n");
-    for (i = 0; i < maxsize; i++) {
+    quicksort(elements, 0, 4);
+    printf("Array after sorting: ");
+    for (int i = 0; i < 5; i++) {
         printf("%d ", elements[i]);
     }
-    
-    quicksort(elements, maxsize);
-
-    printf("\n\nArray after sort:\n");
-
-    for (i = 0; i < maxsize; i++) {
-        printf("%d ", elements[i]);
-    }
-
     return 0;
 }
