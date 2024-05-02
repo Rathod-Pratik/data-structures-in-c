@@ -1,3 +1,4 @@
+//this function input two array and and sort and merge in two array
 #include<stdio.h>
 void merge(int arr1[],int arr2[],int arr3[]){
  int  i,j,k;
