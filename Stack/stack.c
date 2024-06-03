@@ -50,6 +50,26 @@ int peep(){
         }
     }
 }
+
+int change(){
+    int x;
+    if(top<0){
+        printf("stack is empty");
+    }
+    else{
+        printf("Enter position");
+        scanf("%d",&x);
+
+        if(x<0 || x>top+1){
+            printf("out of range ");
+        }
+        else{
+            printf("Enter a new data ");
+            scanf("%d",&stk[top-(x-1)]);
+            printf("\n inputed elelemt is %d",stk[top-x+1]);
+        }
+    }
+}
 int main(){
 int ch;
 do{
