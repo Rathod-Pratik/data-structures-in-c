@@ -1,131 +1,202 @@
 #include <stdio.h>
-#include <malloc.h>
-struct list{
+
+struct list {
     int data;
-    struct list *next; 
-}
+    struct list *next;
+};
+
 typedef struct list node;
-node *p; 
-//function for create node 
-void create(node *q, int num)
-{
-    if (q == NULL)
-    {
-        p = (node *)malloc(sizeof(node));
-        p->data = num;
-        p->next = NULL;
-    }
-    else
-    {
-        while (q->next != NULL)
-        {
-            q = q->next;
+
+node *head, *newnode, *temp,*prevnode;
+
+    void create() {
+        int more = 1;
+        while (more) {
+            node* newnode = (node*)malloc(sizeof(node));
+            if (!newnode) {
+                printf("Memory allocation failed\n");
+                exit(1);
+            }
+
+            printf("Enter element: ");
+            scanf("%d", &newnode->data);
+            newnode->next = NULL;
+
+            if (head == NULL) {
+                head = temp = newnode;
+            } else {
+                temp->next = newnode;
+                temp = newnode;
+            }
+
+            printf("Do you want to add another element? (1 for Yes, 0 for No): ");
+            scanf("%d", &more);
         }
-        q->next = (node *)malloc(sizeof(node));
-        q->next->data = num;
-        q->next->data = NULL;
     }
-}
-//add element at the beginning
-void addbeg(node *q, int num)
-{
-    p = (node *)malloc(sizeof(node));
-    p->data = num;
-    p->next = q;
-}
-//use to display all data
-void diaplay(node *q)
-{
-    printf("\n\tCURR ADDR\tDATA\tNEXT ADDR");
-    do
-    {
-        printf("\n\t%u->\t\t%d->%u", q, q->data, q->next);
-        q = q->next;
-    } while (q = !NULL);
-    printf("\n");
-}
-//use to add element after spacific element
-void addafter(node *q, int c, int num)
-{
-    node *temp;
-    int i;
-    for (i = i; i < c; i++)
-    {
-        q = q->next;
-        if (q == NULL)
-        {
-            printf("position out of range :");
-            return;
-        }
-        temp = (node *)malloc(sizeof(node));
-        temp->data = num;
-        temp->next = q->next;
-        q->next = temp;
-    }
-}
-//use to delete element in node
-void delete(node *q,int num){
-    node *temp;
-    if(q->next==num){
-        p=q->next;
-        free(q);
+
+
+void Delete() {
+    if (head == NULL) {
+        printf("List is empty.\n");
         return;
     }
-    while(q->next->next!=NULL){
-        if(q->next->next==num){
-            temp=q->next;
-            q->next=q->next->next;
-            free(temp);
-            return;
-        }
-        q=q->next;
+
+    temp = head; 
+    prevnode = NULL; 
+
+    while (temp->next != NULL) {
+        prevnode = temp;
+        temp = temp->next;
     }
-    if(q->next->data==num){
-        temp=q->next;
-        free(temp);
-        q->next=NULL;
+
+    if (prevnode == NULL) {
+        head = NULL;
+    } else {
+        prevnode->next = NULL;
+    }
+
+    free(temp);
+    
+    temp = head;
+
+    printf("Last node deleted.\n");
+}
+
+void display(){
+    temp=head;
+     printf("\n\tCUR ADDER\tDATA\tNEXT ADDER");
+    do{
+        printf("\n\t%u->\t%d\t  ->%u",temp,temp->data,temp->next);
+        temp=temp->next;
+    }while(temp!=NULL);
+}
+
+void count(){
+   int i=0;
+    temp=head;
+    while(temp!=NULL){
+        temp=temp->next;
+        i++;
+    }
+    printf("\nthere are %d node are available",i);
+}
+void insertbeg(){
+    newnode=(node *)malloc(sizeof(node));
+    printf("Enter element to inset at beginning :");
+    scanf("%d",&newnode->data);
+    if(head==NULL){
+           newnode->next=NULL;
+    }
+    else{
+        newnode->next=head;
+    }
+    head=newnode;
+}
+
+void insert_specific(){
+    int Pos,i=1;
+    newnode=(node *)malloc(sizeof(node));
+    if (newnode == NULL) {
+        printf("Memory allocation failed\n");
         return;
     }
-    printf("Deleting node %d not found in list ",num);
-}
-int count(node *q){
-    int c=0; 
-    while(q!=NULL){
-        q=q->next;
-        c++;
+    printf("Enter position :");
+    scanf("%d",&Pos);
+
+    int count=0;
+    temp=head;
+    while(temp!=NULL){
+        count++;
+        temp=temp->next;
     }
-    return (c);
+    
+    if(Pos < 1 || Pos > count + 1){
+        printf("invalid value ");
+    }
+    else{
+        temp=head;
+        while(i<Pos-1){
+            temp=temp->next;
+            i++;
+        }
+        printf("Enter data :");
+        scanf("%d",&newnode->data);
+        newnode->next=temp->next;
+        temp->next=newnode;
+    }
+} 
+void intsetend(){
+    newnode=(node *)malloc(sizeof(node));
+    if (newnode == NULL) {
+        printf("Memory allocation failed\n");
+        return;
+    }
+    printf("enter element to insert :");
+    scanf("%d",&newnode->data);
+    newnode->next=NULL;
+
+    if (head == NULL) {
+        // If the list is empty, set the head to the new node
+        head = newnode;
+        return;
+    }
+    temp=head;
+    while(temp!=NULL){
+        temp=temp->next;
+    }
+    temp->next = newnode;
 }
-int main(void)
-{
-  p=NULL;
-  create(p,110);
-  create(p,210);
-  create(p,310);
-  create(p,410);
-  create(p,510);
+int main() {
+    int ch;
+    int running = 1;
 
-  printf("\n\t element in linked list are :%d",count(p));
-  display(p);
+    do {
+        printf("\nMenu:");
+        printf("\n1. Create");
+        printf("\n2. Delete");
+        printf("\n3. Insert at beginning");
+        printf("\n4. Insert Specific");
+        printf("\n5. Insert at end");
+        printf("\n6. Display");
+        printf("\n7. Count");
+        printf("\n8. Exit");
+        printf("\nEnter your choice: ");
+        scanf("%d", &ch);
 
-  addbeg(p,111);
-  addbeg(p,222);
-  addbrg(p,333);
+        switch(ch) {
+            case 1:
+                create();
+                continue;
 
-  printf("The element in linked list are :%d",count(p));
-  display(p);
+            case 2:
+                Delete();
+                continue;
 
-  addafter(p,3,777);
-  addafter(p,5,999);
-  
-  printf("\n\t The element in the linked list are :%d",count(p));
-  display(p);
+            case 3:
+                insertbeg();
+                continue;
 
-  deleted(p,88);
-  deleted(p,110);
+            case 4:
+             insert_specific();
+                continue;
 
-  printf("\n\t element in the linked list are :%d",count(p));
-  display(p);
+            case 5:
+            intsetend();
+            continue;
+            case 6:
+                display();
+                continue;
 
+            case 7:
+            count();
+            continue;
+            case 8:
+                running = 0;
+                break;
+
+            default:
+                printf("\nInvalid value");
+        }
+    } while (running==1);
     return 0;
-}
+    }
