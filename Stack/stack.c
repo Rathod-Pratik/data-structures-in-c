@@ -1,115 +1,121 @@
-#include<stdio.h>
-#define size 100
-int stk[size],top=-1;
+#include <stdio.h>
+#include <stdlib.h>
 
-int push(){
+#define size 10
+
+int stk[size], top = -1;
+
+int push() {
     int no;
-    if(top<size-1){
-        printf("\n Stack is full :");
-    }
-    else{
-        printf("Enter number :");
-        scanf("%d",&no);
-        stk[++top]=no;
-    }
-}
-
-int pop(){
-    if(top<0){
-        printf("Stack is empty :");
-    }
-    else{
-        printf("Deleted element is %d",stk[top--]);
+    if (top > size - 1) {
+        printf("\nStack is full :\n");
+        return 0; 
+    } 
+    else {
+        printf("\nEnter number: ");
+        scanf("%d", &no);
+        stk[++top] = no;
+        return 1; 
     }
 }
 
-int Display(){
-    if(top<0){
-        printf("stack is empty :");
-    }
-    else{
-        for(int i=top; i>=0; i--){
-            printf("The element is %d at position %d",stk[i],i);
-        }
-    }
-}
-int peep(){
-    int  x;
-    if(top<0){
-        printf("\n Stack is empty :");
-    }
-    else{
-        printf("Enter position to read an element :");
-        scanf("%d",&x);
-
-        if(x<0 || x>top+1){
-            printf("\n out of range ");
-        }
-        else{
-            printf("\n the peeped element is %d",stk[top-x+1]);
+void Display() {
+    if (top < 0) {
+        printf("Stack is empty\n");
+    } 
+    else {
+        printf("\nStack elements:\n");
+        for (int i = 0; i <= top; i++) {
+            printf("Position %d: %d\n", i + 1, stk[i]);
         }
     }
 }
 
-int change(){
-    int x;
-    if(top<0){
-        printf("stack is empty");
+void pop() {
+    if (top < 0) {
+        printf("\nStack is empty\n");
     }
-    else{
-        printf("Enter position");
-        scanf("%d",&x);
+    else {
+        printf("\nDeleted element is %d\n", stk[top--]);
+    }
+}
 
-        if(x<0 || x>top+1){
-            printf("out of range ");
-        }
-        else{
-            printf("Enter a new data ");
-            scanf("%d",&stk[top-(x-1)]);
-            printf("\n inputed elelemt is %d",stk[top-x+1]);
+void peep() {
+    if (top < 0) {
+        printf("\nStack is empty\n");
+    } else {
+        int x;
+        printf("\nEnter position to peep: ");
+        scanf("%d", &x);
+        if (x < 1 || x > top + 1) {
+            printf("\nPosition out of range\n");
+        } 
+        else {
+            printf("\nPeeped element is %d at position %d\n", stk[top - (x - 1)], x);
         }
     }
 }
-int main(){
-int ch;
-do{
-    printf("Main menu :");
-    printf("\n 1.push ");
-    printf("\n 2.pop ");
-    printf("\n 3.Display ");
-    printf("\n 4.peep ");
-    printf("\n 5.Change ");
-    printf("\n 6.Exit ");
 
-    printf("\n Enter your choice :");
-    scanf("%d",&ch);
+void Change() {
+    if (top < 0) {
+        printf("\nStack is empty\n");
+    }
+    else {
+        int x, newElement;
+        printf("\nEnter position to change: ");
+        scanf("%d", &x);
 
-    switch(ch){
-        case 1:
-        push();
-        continue;
-
-        case 2:
-        pop();
-        continue;
-
-        case 3:
-        Display();
-        continue;
-
-        case 4:
-        peep();
-        continue;
-
-        case 5:
-        Change();
-        continue;
-
-        case 6:
-        exit(0);
-
-        default:
-        printf("End of session ");
+        if (x < 1 || x > top + 1) {
+            printf("Position out of range\n");
+        } 
+        else {
+            printf("\nEnter new element: ");
+            scanf("%d", &newElement);
+            stk[top - x + 1] = newElement;
+            printf("\nChanged element to %d at position %d\n", stk[top - x + 1], x);
+        }
     }
 }
+
+int main() {
+    int ch;
+    do {
+        printf("\nMain menu:");
+        printf("\n1. Push");
+        printf("\n2. Pop");
+        printf("\n3. Display");
+        printf("\n4. Peep");
+        printf("\n5. Change");
+        printf("\n6. Exit");
+
+        printf("\n\nEnter your choice: ");
+        scanf("%d", &ch);
+
+        switch (ch) {
+            case 1:
+                if (push()) {
+                    printf("\nElement pushed successfully\n");
+                }
+                break;
+            case 2:
+                pop();
+                break;
+            case 3:
+                Display();
+                break;
+            case 4:
+                peep();
+                break;
+            case 5:
+                Change();
+                break;
+            case 6:
+                printf("\nExiting program\n");
+                exit(0);
+            default:
+                printf("\nInvalid choice\n");
+        }
+    } while (ch != 6);
+
+    return 0;
 }
