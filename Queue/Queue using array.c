@@ -1,122 +1,90 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include<stdio.h>
+#define size 11
 
-#define size 10
+int q[size], front = -1, rear = -1;
 
-int stk[size], top = -1;
-
-int push() {
-    int no;
-    if (top >= size - 1) {
-        printf("\nStack is full :\n");
-        return 0; 
-    } 
-    else {
-        printf("\nEnter number: ");
-        scanf("%d", &no);
-        stk[++top] = no;
-        return 1; 
+void insert(int x) {
+    if (rear >= size - 1) {
+        printf("Queue is full\n");
+    } else if (front == -1 && rear == -1) {
+        front = rear = 0;
+        q[rear] = x;    
+    } else {
+        rear++;
+        q[rear] = x;
     }
 }
 
-void Display() {
-    if (top < 0) {
-        printf("Stack is empty\n");
-    } 
-    else {
-        printf("\nStack elements:\n");
-        for (int i = 0; i <= top; i++) {
-            printf("Position %d: %d\n", i + 1, stk[i]);
+void delete() {
+    if (front == -1 && rear == -1) {
+        printf("Queue is empty\n");
+    } else if (front == rear) {
+        printf("Deleted element is %d\n", q[front]);
+        front = rear = -1;
+    } else {
+        printf("Deleted element is %d\n", q[front]);
+        front++;
+    }
+}
+
+void display() {
+    if (front == -1 && rear == -1) {
+        printf("Queue is empty\n");
+    } else {
+        int i;
+        for (i = front; i <= rear; i++) {
+            printf("Data is %d\n", q[i]);
         }
     }
 }
 
-void pop() {
-    if (top < 0) {
-        printf("\nStack is empty\n");
-    }
-    else {
-        printf("\nDeleted element is %d\n", stk[top--]);
-    }
-}
-
-void peep() {
-    if (top < 0) {
-        printf("\nStack is empty\n");
-    } 
-    else {
-        int x;
-        printf("\nEnter position to peep (from top): ");
-        scanf("%d", &x);
-        if (x < 1 || x > top + 1) {
-            printf("\nPosition out of range\n");
-        } 
-        else {
-            printf("\nPeeped element is %d at position %d\n", stk[top - (x - 1)], x);
-        }
-    }
-}
-
-void Change() {
-    if (top < 0) {
-        printf("\nStack is empty\n");
-    } 
-    else {
-        int x, newElement;
-        printf("\nEnter position to change (from top): ");
-        scanf("%d", &x);
-
-        if (x < 1 || x > top + 1) {
-            printf("Position out of range\n");
-        } 
-        else {
-            printf("\nEnter new element: ");
-            scanf("%d", &newElement);
-            stk[top - x + 1] = newElement;
-            printf("\nChanged element to %d at position %d\n", stk[top - x + 1], x);
-        }
+void peek() {
+    if (front == -1 && rear == -1) {
+        printf("Queue is empty\n");
+    } else {
+        printf("Peeked element is %d\n", q[front]);
     }
 }
 
 int main() {
-    int ch;
+    int ch, num;
     do {
-        printf("\nMain menu:");
-        printf("\n1. Push");
-        printf("\n2. Pop");
-        printf("\n3. Display");
-        printf("\n4. Peep");
-        printf("\n5. Change");
-        printf("\n6. Exit");
+        printf("\nMain menu:\n");
+        printf("1. Insert\n");
+        printf("2. Delete\n");
+        printf("3. Display\n");
+        printf("4. Peek\n");
+        printf("5. Exit\n");
 
-        printf("\n\nEnter your choice: ");
+        printf("Enter your choice: ");
         scanf("%d", &ch);
 
         switch (ch) {
             case 1:
-                if (push()) {
-                    printf("\nElement pushed successfully\n");
-                }
+                printf("Enter element to insert: ");
+                scanf("%d", &num);
+                insert(num);
                 break;
+
             case 2:
-                pop();
+                delete();
                 break;
+
             case 3:
-                Display();
+                display();
                 break;
+
             case 4:
-                peep();
+                peek();
                 break;
+
             case 5:
-                Change();
                 break;
-            case 6:
-                printf("\nExiting program\n");
-                exit(0);
+
             default:
-                printf("\nInvalid choice\n");
+                printf("Enter a valid value\n");
         }
-    } while (ch != 6);
+    } while (ch != 5);
 
     return 0;
 }
